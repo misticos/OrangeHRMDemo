@@ -1,7 +1,6 @@
 from selenium import webdriver
-import time
-from OrangeHRMDemo.Pages import loginPage
-from OrangeHRMDemo.Pages import welcomePage
+from OrangeHRMDemo.Pages.loginPage import LoginPage
+from OrangeHRMDemo.Pages.welcomePage import WelcomePage
 import unittest
 
 
@@ -13,14 +12,18 @@ class LoginTest(unittest.TestCase):
         cls.driver.implicitly_wait(10)
         cls.driver.maximize_window()
 
-    @classmethod
     def test_login(self):
+        driver = self.driver
 
-        self.driver.get("https://opensource-demo.orangehrmlive.com/")
-        self.driver.find_element_by_xpath("//*")
+        driver.get("https://opensource-demo.orangehrmlive.com/")
 
+        login = LoginPage(driver)
 
-# if __name__ == "__main__": unittest.main()
+        login.enter_username("Admin")
+        login.enter_password("admin123")
+        login.click_login()
 
-# https://opensource-demo.orangehrmlive.com/
-# https://www.youtube.com/watch?v=BURK7wMcCwU
+        welcomepage = WelcomePage(driver)
+        welcomepage.click_welcome()
+        welcomepage.click_logout()
+
