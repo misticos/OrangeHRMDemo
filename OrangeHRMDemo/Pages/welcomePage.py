@@ -14,13 +14,19 @@ class WelcomePage:
 
     def click_welcome(self):
 
-        self.driver.find_element_by_xpath(self.welcome_admin_button).click()
+        try:
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, self.welcome_admin_button))
+            )
+        finally:
+            self.driver.find_element_by_xpath(self.welcome_admin_button).click()
 
     def click_logout(self):
 
         try:
-            WebDriverWait(self.driver, 30).until(
+            WebDriverWait(self.driver, 30000).until(
                 EC.presence_of_element_located((By.XPATH, self.logout))
             )
+
         finally:
             self.driver.find_element_by_xpath(self.logout).click()

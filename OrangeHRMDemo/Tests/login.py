@@ -1,29 +1,28 @@
 from selenium import webdriver
-from OrangeHRMDemo.Pages.loginPage import LoginPage
-from OrangeHRMDemo.Pages.welcomePage import WelcomePage
+from OrangeHRMDemo.Pages.BaseTestPage import BaseTestPage
 import unittest
 
 
-class LoginTest(unittest.TestCase):
+class LoginTest(unittest.TestCase, BaseTestPage):
 
     @classmethod
-    def setUpClass(cls):
-        cls.driver = webdriver.Chrome(executable_path="../drivers/chromedriver.exe")
-        cls.driver.implicitly_wait(10)
-        cls.driver.maximize_window()
+    def setUpClass(self):
+        self.driver = webdriver.Chrome(executable_path="../drivers/chromedriver.exe")
+        self.driver.implicitly_wait(100)
+        self.driver.maximize_window()
 
     def test_login(self):
-        driver = self.driver
+        self.driver.get("https://opensource-demo.orangehrmlive.com/")
 
-        driver.get("https://opensource-demo.orangehrmlive.com/")
+        self.login_page.enter_username("Admin")
+        self.login_page.enter_password("admin123")
+        self.login_page.click_login()
 
-        login = LoginPage(driver)
+        self.welcome_page.click_welcome()
+        self.welcome_page.click_logout()
 
-        login.enter_username("Admin")
-        login.enter_password("admin123")
-        login.click_login()
-
-        welcomepage = WelcomePage(driver)
-        welcomepage.click_welcome()
-        welcomepage.click_logout()
-
+    @classmethod
+    def tearDownClass(self):
+        self.driver.close()
+        self.driver.quit()
+        print("Test Completed")
